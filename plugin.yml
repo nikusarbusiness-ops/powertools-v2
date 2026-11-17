@@ -1,0 +1,22 @@
+name: PowerTools
+version: 2.0.0
+main: de.powertools.PowerTools
+api-version: '1.21'
+author: PowerTools
+description: Blitz Drill, Blitz Pickaxe, Blitz Axe, Blitz Sell Axe, Blitz Schaufel und Blitz Eimer
+softdepend: [Vault]
+
+commands:
+  powertools:
+    description: Admin-Befehl für PowerTools
+    usage: /powertools <give|reload>
+    aliases: [pt]
+    permission: powertools.admin
+
+permissions:
+  powertools.admin:
+    description: Items geben und Config neu laden
+    default: op
+  powertools.sellaxe:
+    description: Blitz Sell Axe benutzen
+    default: true

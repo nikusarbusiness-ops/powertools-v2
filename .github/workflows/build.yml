@@ -2,33 +2,32 @@ name: Build PowerTools
 
 on:
   push:
-  workflow_dispatch:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Code holen
+      - name: Repository auschecken
         uses: actions/checkout@v4
 
-      - name: Java 21 einrichten
+      - name: JDK einrichten (Java 21)
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 21
-          cache: maven
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
 
-      - name: Dateien in die richtige Struktur sortieren
-        run: |
-          mkdir -p src/main/java/de/powertools src/main/resources
-          mv *.java src/main/java/de/powertools/
-          mv config.yml plugin.yml src/main/resources/
-
-      - name: Plugin bauen
+      - name: Maven-Build ausführen (mit optimiertem Speicher)
         run: mvn -B clean package
+        env:
+          MAVEN_OPTS: "-Xmx1024m -XX:MaxMetaspaceSize=512m"
 
-      - name: Jar hochladen
+      - name: Artifacts speichern (JAR-Datei)
         uses: actions/upload-artifact@v4
         with:
-          name: PowerTools
-          path: target/PowerTools.jar
+          name: PowerTools-JAR
+          path: target/*.jar
